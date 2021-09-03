@@ -1,0 +1,225 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>A Basic HTML5 Template</title>
+  <meta name="description" content="A simple HTML5 Template for new projects.">
+  <meta name="author" content="SitePoint">
+
+  <meta property="og:title" content="A Basic HTML5 Template">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.sitepoint.com/a-basic-html5-template/">
+  <meta property="og:description" content="A simple HTML5 Template for new projects.">
+  <meta property="og:image" content="image.png">
+
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
+
+</head>
+
+<style>
+
+.main-area {
+      width:100%;
+      max-width:1150px;
+      margin:30px auto;
+  }
+
+  #list {
+    /*border: 1px solid #9a9a9a;*/
+    color: red;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #list .article {
+    border: 1px solid #9a9a9a;
+    padding: 20px;
+    position:relative;
+    width:95%;
+    margin:10px auto;
+    /*flex: 1 1 auto;*/
+  }
+
+  #list .article h2 {
+    font-size:1.5em;
+    color:#000;
+    text-decoration: underline;
+    /*float:right;*/
+    overflow: hidden;
+    max-width: 20ch;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #list .article img.shape {
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    /*float:right;*/
+    position:absolute;
+    right:10px;
+    top:10px;
+    box-shadow: 1px 3px 3px #9a9a9a;
+    /*text-decoration: underline;*/
+  }
+
+  #list .article h6 {
+      text-decoration: underline;
+  }
+
+  #list .article h5 span:before {
+     content: "#";
+  }
+
+  #list .article h5 span {
+      padding:3px 5px;
+      border:1px solid #1F456E;
+      border-radius: 3px;
+      /*color:#1F456E;*/
+      font-size: 0.8em;
+  }
+
+  #list .article h5 span:hover {
+      background:#1F456E;
+      color:#fff;
+  }
+
+  #list .article .post-contents {
+    color: black;
+    font-size: 0.9em;
+    text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+  }
+
+ .tokio {
+    color: #9a9a9a;
+  }
+
+  .oway {
+    color: #EACe09;
+  }
+
+  .like {
+    color: orange;
+  }
+
+  .asia {
+    color: black;
+  }
+
+  @media only screen and (max-width: 992px) {
+      #list {
+        /*border: 1px solid #9a9a9a;*/
+        color: red;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      #list .article h2 {
+
+        /*float:right;*/
+        overflow: hidden;
+        max-width: 20ch;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+  }
+
+   @media only screen and (max-width: 660px) {
+      #list {
+        /*border: 1px solid #9a9a9a;*/
+        color: red;
+        display: column;
+        grid-template-columns: repeat(1, 1fr);
+      }
+  }
+
+
+</style>
+
+<body>
+  <div class="main-area">
+
+      <div id="list"></div>
+
+    </div>
+    <script>
+
+
+
+        fetch("https://i-column-site.microcms.io/api/v1/post/?limit=100", {
+            headers: {
+                "X-API-KEY": "9719d5ef-40cc-48b3-9ac0-74292c4f5610"
+            }
+        })
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(json) {
+          console.log(json)
+            var fragment = document.createDocumentFragment();
+            for (var i = 0; i < json.contents.length; i++) {
+
+              // if(json.contents[i].category.name === "TOKIO INKARAMI") {
+                console.log(json.contents[i])
+
+                var title = document.createElement('h2');
+                title.textContent = json.contents[i].title;
+
+                var img = document.createElement('img');
+                img.className = "shape";
+                img.src = json.contents[i].image.url;
+
+                // "<img src='json.contents[i].image.url'>";
+
+                var category = document.createElement('h5');
+                // category.textContent = json.contents[i].category.name;
+                category.innerHTML = "<span class='" + json.contents[i].category.id + "''>" + json.contents[i].category.name + "</span>"
+
+                var url = document.createElement('h6');
+                url.innerHTML = "<a href='https://i-column-online.netlify.app/" + json.contents[i].id + "'>" + "本ページへ飛ぶ"+ "</a>";
+
+
+                var body = document.createElement('div');
+                body.className = "post-contents";
+                body.innerHTML = json.contents[i].body;
+
+
+                // when category has a contains 'TOKIO INKARAMI' then put the data into "list"
+
+                var item = document.createElement('div');
+                item.className = "article";
+                item.appendChild(title);
+                item.appendChild(img);
+                item.appendChild(url);
+                item.appendChild(category);
+                item.appendChild(body);
+
+                fragment.appendChild(item);
+
+              // }
+
+            }
+            document.getElementById('list').appendChild(fragment);
+            console.log(json.contents);
+        })
+   </script>
+
+</body>
+</html>
+
+
+
+
+
+
